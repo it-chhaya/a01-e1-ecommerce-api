@@ -1,6 +1,7 @@
 package co.istad.chhaya.webmvc.controller;
 
 import co.istad.chhaya.webmvc.dto.CreateProductRequest;
+import co.istad.chhaya.webmvc.dto.PatchProductRequest;
 import co.istad.chhaya.webmvc.dto.ProductResponse;
 import co.istad.chhaya.webmvc.dto.UpdateProductRequest;
 import co.istad.chhaya.webmvc.service.ProductService;
@@ -64,13 +65,13 @@ public class ProductController {
 
     @PatchMapping("/{code}")
     public ProductResponse patchByCode(
-            @PathVariable Integer code,
-            @RequestBody UpdateProductRequest updateProductRequest
+            @PathVariable String code,
+            @Valid @RequestBody PatchProductRequest patchProductRequest
     ) {
         log.info("patchProductRequest: {} and code: {}",
-                updateProductRequest,
+                patchProductRequest,
                 code);
-        return null;
+        return productService.patchByCode(code, patchProductRequest);
     }
 
 
