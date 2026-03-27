@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
-public class AppGlobalException {
+public class AppGlobalExceptionHandler {
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

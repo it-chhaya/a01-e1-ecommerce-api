@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 
 public interface ProductService {
 
+    void deleteByCode(String code);
+
     ProductResponse patchByCode(String code, PatchProductRequest patchProductRequest);
 
     ProductResponse getProductByCode(String code);

@@ -29,6 +29,19 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    public void deleteByCode(String code) {
+        // Validate product code
+        Product product = productRepository.findById(code)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Product code not found"
+                ));
+        productRepository.delete(product);
+    }
+
+
+
+    @Override
     public ProductResponse patchByCode(String code, PatchProductRequest patchProductRequest) {
         // TODO:
         // Validate product code
