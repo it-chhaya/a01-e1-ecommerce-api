@@ -4,6 +4,7 @@ import co.istad.chhaya.webmvc.domain.Category;
 import co.istad.chhaya.webmvc.domain.Product;
 import co.istad.chhaya.webmvc.dto.CreateProductRequest;
 import co.istad.chhaya.webmvc.dto.ProductResponse;
+import co.istad.chhaya.webmvc.dto.UpdateProductRequest;
 import co.istad.chhaya.webmvc.mapper.ProductMapper;
 import co.istad.chhaya.webmvc.repository.CategoryRepository;
 import co.istad.chhaya.webmvc.repository.ProductRepository;
@@ -24,6 +25,35 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     private final ProductMapper productMapper;
+
+
+    @Override
+    public ProductResponse getProductByCode(String code) {
+        return productRepository.findById(code)
+                .map(productMapper::productToProductResponse)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Product code not found"
+                ));
+    }
+
+
+    @Override
+    public ProductResponse updateByCode(String code, UpdateProductRequest updateProductRequest) {
+        // TODO:
+        // Validate product code
+        Product product = productRepository.findById(code)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Product code not found"
+                ));
+
+        productMapper.updateProductRequestToProduct(updateProductRequest, product);
+
+        product = productRepository.save(product);
+
+        return productMapper.productToProductResponse(product);
+    }
 
 
     @Override

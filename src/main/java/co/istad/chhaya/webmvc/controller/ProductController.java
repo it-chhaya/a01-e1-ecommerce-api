@@ -11,9 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/products")
 @Slf4j
@@ -25,12 +22,13 @@ public class ProductController {
 
     @GetMapping("/{code}")
     public ProductResponse getProductByCode(
-            @PathVariable Integer code
+            @PathVariable String code
     ) {
         log.info("getProductByCode: {}", code);
 
-        return null;
+        return productService.getProductByCode(code);
     }
+
 
     @GetMapping
     public Page<ProductResponse> getProducts(
@@ -55,13 +53,13 @@ public class ProductController {
 
     @PutMapping("/{code}")
     public ProductResponse updateByCode(
-            @PathVariable Integer code,
-            @RequestBody UpdateProductRequest updateProductRequest
+            @PathVariable String code,
+            @Valid @RequestBody UpdateProductRequest updateProductRequest
     ) {
         log.info("updateProductRequest: {} and code: {}",
                 updateProductRequest,
                 code);
-        return null;
+        return productService.updateByCode(code, updateProductRequest);
     }
 
     @PatchMapping("/{code}")
