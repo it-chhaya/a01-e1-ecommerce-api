@@ -43,6 +43,10 @@ public class SecurityConfig {
 
         // 3. Endpoints security
         http.authorizeHttpRequests(endpoint -> endpoint
+                .requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAnyRole("BUSINESS", "ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyRole("BUSINESS", "ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/v1/products/**").hasAnyRole("BUSINESS", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
                 .anyRequest().authenticated()
         );
