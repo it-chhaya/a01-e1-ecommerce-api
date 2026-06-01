@@ -24,6 +24,9 @@ public class Category {
     @Column(nullable = false, length = 50, unique = true)
     private String name; // Default String = 255 characters
 
+    private String description;
+    private String icon;
+
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
