@@ -1,4 +1,11 @@
+server:
+  port: 9090
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/istad-oauth2
   jpa:
     hibernate:
       ddl-auto: update # create, drop, alter, truncate
@@ -12,4 +19,4 @@ spring:
     username: postgres
     password: qwer
   application:
-    name: a01-e1-spring-webmvc
+    name: advanced-ecommerce-api-e1
