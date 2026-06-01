@@ -1,4 +1,4 @@
-package co.istad.chhaya.ecommerce.dto;
+package co.istad.chhaya.ecommerce.features.product.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,10 +7,12 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
-public record CreateProductRequest(
+public record UpdateProductRequest(
         @NotBlank(message = "Name is required")
         @Size(min = 1, max = 100)
         String name,
+
+        String description,
 
         @NotNull
         @Positive
@@ -18,12 +20,6 @@ public record CreateProductRequest(
 
         @NotNull
         @Positive
-        Integer qty,
-
-        String description,
-
-        @NotNull
-        @Positive
-        Integer categoryId
+        Integer qty
 ) {
 }

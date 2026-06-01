@@ -1,14 +1,11 @@
-package co.istad.chhaya.ecommerce.service;
+package co.istad.chhaya.ecommerce.features.product;
 
-import co.istad.chhaya.ecommerce.domain.Category;
-import co.istad.chhaya.ecommerce.domain.Product;
-import co.istad.chhaya.ecommerce.dto.CreateProductRequest;
-import co.istad.chhaya.ecommerce.dto.PatchProductRequest;
-import co.istad.chhaya.ecommerce.dto.ProductResponse;
-import co.istad.chhaya.ecommerce.dto.UpdateProductRequest;
-import co.istad.chhaya.ecommerce.mapper.ProductMapper;
-import co.istad.chhaya.ecommerce.repository.CategoryRepository;
-import co.istad.chhaya.ecommerce.repository.ProductRepository;
+import co.istad.chhaya.ecommerce.features.category.Category;
+import co.istad.chhaya.ecommerce.features.product.dto.CreateProductRequest;
+import co.istad.chhaya.ecommerce.features.product.dto.PatchProductRequest;
+import co.istad.chhaya.ecommerce.features.product.dto.ProductResponse;
+import co.istad.chhaya.ecommerce.features.product.dto.UpdateProductRequest;
+import co.istad.chhaya.ecommerce.features.category.CategoryRepository;
 import co.istad.chhaya.ecommerce.util.GenerateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

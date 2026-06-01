@@ -1,9 +1,8 @@
-package co.istad.chhaya.ecommerce.mapper;
+package co.istad.chhaya.ecommerce.features.product;
 
-import co.istad.chhaya.ecommerce.domain.Product;
-import co.istad.chhaya.ecommerce.dto.PatchProductRequest;
-import co.istad.chhaya.ecommerce.dto.ProductResponse;
-import co.istad.chhaya.ecommerce.dto.UpdateProductRequest;
+import co.istad.chhaya.ecommerce.features.product.dto.PatchProductRequest;
+import co.istad.chhaya.ecommerce.features.product.dto.ProductResponse;
+import co.istad.chhaya.ecommerce.features.product.dto.UpdateProductRequest;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

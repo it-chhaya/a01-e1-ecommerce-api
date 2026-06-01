@@ -1,6 +1,5 @@
-package co.istad.chhaya.ecommerce.repository;
+package co.istad.chhaya.ecommerce.features.product;
 
-import co.istad.chhaya.ecommerce.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository
