@@ -7,6 +7,7 @@ import co.istad.chhaya.ecommerce.features.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,7 +25,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderMapper orderMapper;
 
     @Override
-    public OrderResponse createNew(CreateOrderRequest createOrderRequest) {
+    public OrderResponse createNew(CreateOrderRequest createOrderRequest, Jwt jwt) {
 
         List<OrderLine> validOrderLines = new ArrayList<>();
         final Order order = orderMapper.mapCreateOrderRequestToOrder(createOrderRequest);
@@ -53,7 +54,8 @@ public class OrderServiceImpl implements OrderService{
         // System data generation
         order.setOrderedAt(Instant.now());
         order.setIsDeleted(false);
-        order.setOrderedBy("ADMIN");
+        order.setOrderedBy(jwt.getSubject());
+        //order.setOrderedBy(jwt.getClaimAsString("preferred_username"));
         order.setOrderLines(validOrderLines);
 
         Order savedOrder = orderRepository.save(order);

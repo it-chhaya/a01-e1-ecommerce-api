@@ -5,6 +5,8 @@ import co.istad.chhaya.ecommerce.features.order.dto.OrderResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,9 +19,10 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public OrderResponse createNew(
-            @Valid @RequestBody CreateOrderRequest createOrderRequest
+            @Valid @RequestBody CreateOrderRequest createOrderRequest,
+            @AuthenticationPrincipal Jwt jwt
     ) {
-        return orderService.createNew(createOrderRequest);
+        return orderService.createNew(createOrderRequest, jwt);
     }
 
 }
