@@ -1,6 +1,7 @@
 file-upload:
   client-path: /file
   server-path: /Users/chanchhaya/Pictures/fileupload/
+  base-uri: http://localhost:${server.port}${file-upload.client-path}
 
 server:
   port: 9090
@@ -24,4 +25,8 @@ spring:
     password: qwer
   application:
     name: advanced-ecommerce-api-e1
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size:  20MB
 

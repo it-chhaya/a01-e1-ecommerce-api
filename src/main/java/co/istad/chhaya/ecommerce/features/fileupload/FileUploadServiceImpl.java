@@ -16,8 +16,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileUploadServiceImpl implements FileUploadService {
 
+    private final FileUploadRepository fileUploadRepository;
+
     @Value("${file-upload.server-path}")
     private String serverPath;
+
+    @Value("${file-upload.base-uri}")
+    private String baseUri;
 
     @Override
     public FileResponse upload(MultipartFile file) {
@@ -34,11 +39,20 @@ public class FileUploadServiceImpl implements FileUploadService {
             throw new RuntimeException(e);
         }
 
+        FileUpload fileUpload = new FileUpload();
+        fileUpload.setName(fileName);
+        fileUpload.setExtension(fileExt);
+        fileUpload.setMediaType(file.getContentType());
+        fileUpload.setSize(file.getSize());
+
+        fileUploadRepository.save(fileUpload);
+
         return FileResponse.builder()
-                .name(String.format("%s.%s", fileName, fileExt))
-                .mediaType(file.getContentType())
-                .size(file.getSize())
-                .uri("")
+                .name(fileUpload.getName())
+                .extension(fileUpload.getExtension())
+                .mediaType(fileUpload.getMediaType())
+                .size(fileUpload.getSize())
+                .uri(baseUri + "/" + fileUpload.getName() + "." +  fileUpload.getExtension())
                 .build();
     }
 
