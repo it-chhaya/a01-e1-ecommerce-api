@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,22 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${file-upload.base-uri}")
     private String baseUri;
 
+
+    @Override
+    public List<FileResponse> uploadMultiple(List<MultipartFile> files) {
+        return files.stream()
+                .map(this::saveFile)
+                .collect(Collectors.toList());
+    }
+
+
     @Override
     public FileResponse upload(MultipartFile file) {
+        return saveFile(file);
+    }
 
+
+    private FileResponse saveFile(MultipartFile file) {
         String fileName = UUID.randomUUID().toString();
         String fileExt = file.getOriginalFilename()
                 .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
