@@ -25,7 +25,9 @@ public final class AuthUtils {
     }
 
     public static String extractJwt() {
-        return ((Jwt) getAuth().getPrincipal()).getTokenValue();
+        if (getAuth().getPrincipal() != null)
+            return ((Jwt) getAuth().getPrincipal()).getTokenValue();
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You have been unauthorized");
     }
 
     public static Authentication getAuth() {

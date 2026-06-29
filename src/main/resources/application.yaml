@@ -1,3 +1,7 @@
+file-upload:
+  client-path: /file
+  server-path: /Users/chanchhaya/Pictures/fileupload/
+
 server:
   port: 9090
 spring:
