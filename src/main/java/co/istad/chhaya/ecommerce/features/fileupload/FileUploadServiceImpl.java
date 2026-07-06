@@ -3,8 +3,14 @@ package co.istad.chhaya.ecommerce.features.fileupload;
 import co.istad.chhaya.ecommerce.features.fileupload.dto.FileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,12 +25,34 @@ import java.util.stream.Collectors;
 public class FileUploadServiceImpl implements FileUploadService {
 
     private final FileUploadRepository fileUploadRepository;
+    private final FileUploadMapper fileUploadMapper;
 
     @Value("${file-upload.server-path}")
     private String serverPath;
 
-    @Value("${file-upload.base-uri}")
-    private String baseUri;
+
+    @Override
+    public Page<FileResponse> findAll(int pageNumber, int pageSize) {
+        Sort sortById = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sortById);
+
+        Page<FileUpload> fileUploadPage = fileUploadRepository.findAll(pageable);
+
+        return fileUploadPage
+                .map(fileUploadMapper::mapFileUploadToFileResponse);
+    }
+
+
+    @Override
+    public FileResponse findByName(String name) {
+        return fileUploadRepository
+                .findByName(name)
+                .map(fileUploadMapper::mapFileUploadToFileResponse)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "File has not been found"
+                ));
+    }
 
 
     @Override
@@ -62,13 +90,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         fileUploadRepository.save(fileUpload);
 
-        return FileResponse.builder()
-                .name(fileUpload.getName())
-                .extension(fileUpload.getExtension())
-                .mediaType(fileUpload.getMediaType())
-                .size(fileUpload.getSize())
-                .uri(baseUri + "/" + fileUpload.getName() + "." +  fileUpload.getExtension())
-                .build();
+        return fileUploadMapper.mapFileUploadToFileResponse(fileUpload);
     }
 
 }

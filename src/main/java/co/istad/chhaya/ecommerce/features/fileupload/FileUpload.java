@@ -22,4 +22,6 @@ public class FileUpload {
     private String mediaType;
     @Column(nullable = false)
     private Long size;
+    @Transient
+    private String uri;
 }
