@@ -15,9 +15,7 @@ public class KeycloakAdminClientConfig {
 
     @Bean
     public Keycloak configureAdminClient() {
-
         IO.println("keycloak properties: " + keycloakProps);
-
         return KeycloakBuilder.builder()
                 .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
                 .serverUrl(keycloakProps.getServerUrl())
