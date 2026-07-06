@@ -1,5 +1,8 @@
 package co.istad.chhaya.ecommerce.features.auth.dto;
 
+import lombok.Builder;
+
+@Builder
 public record RegisterResponse(
         String keycloakUserId,
         String username,
