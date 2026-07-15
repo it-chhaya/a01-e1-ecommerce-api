@@ -3,6 +3,7 @@ networks:
     external: true
 volumes:
   ecommerce-db-e1-vol:
+  keycloak-e1-vol:
 services:
   ecommerce-db-e1:
     image: postgres:18.4
@@ -17,3 +18,47 @@ services:
       - "ecommerce-db-e1-vol:/var/lib/postgresql/18/docker"
     networks:
       - e1-net
+    restart: unless-stopped
+  keycloak-e1:
+    image: quay.io/keycloak/keycloak:26.6.1
+    container_name: keycloak-e1
+    environment:
+      # Database Configuration
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://ecommerce-db-e1:5432/db_keycloak
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+
+      # Admin User
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+
+      # Production Settings
+      KC_HOSTNAME: ${KC_HOSTNAME}
+      KC_HOSTNAME_PORT: ${KC_HOSTNAME_PORT}
+      KC_HOSTNAME_STRICT: false               # set to true if HTTPS
+      KC_HOSTNAME_STRICT_HTTPS: false         # set to true if HTTPS
+      KC_HOSTNAME_URL: ${KC_HOSTNAME_URL}
+      KC_HOSTNAME_ADMIN_URL: ${KC_HOSTNAME_URL}
+      KC_PROXY: edge
+      KC_HTTP_ENABLED: true
+      #KC_HTTPS_PORT: 443
+      KC_PROXY_HEADERS: xforwarded
+      KC_CACHE: ispn
+      KC_LOG_LEVEL: INFO
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      JAVA_OPTS_APPEND: "-Xms512m -Xmx2048m"
+    command: start               # use in production mode
+    #command: start-dev                        # use in development mode
+    ports:
+      - "127.0.0.1:9091:8080"
+    volumes:
+      - keycloak-e1-vol:/opt/keycloak/data
+      - ./keycloak/themes:/opt/keycloak/themes
+      - ./keycloak/conf:/opt/keycloak/conf
+    networks:
+      - e1-net
+    depends_on:
+      - ecommerce-db-e1
+    restart: unless-stopped
