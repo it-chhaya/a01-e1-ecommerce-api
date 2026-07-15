@@ -24,6 +24,8 @@ public record RegisterRequest(
         @Size(max = 255)
         @NotBlank(message = "Last name is required")
         String lastName,
+        @Size(min = 9, max = 50)
+        String phoneNumber,
         @Size(max = 255)
         String gender,
         @Size(max = 255)

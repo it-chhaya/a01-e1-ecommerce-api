@@ -20,9 +20,9 @@ spring:
         format_sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/e1_ecommerce
-    username: postgres
-    password: qwer
+    url: jdbc:postgresql://localhost:9432/db_ecommerce
+    username: e1usr
+    password: qwerqwer
   application:
     name: advanced-ecommerce-api-e1
   servlet:

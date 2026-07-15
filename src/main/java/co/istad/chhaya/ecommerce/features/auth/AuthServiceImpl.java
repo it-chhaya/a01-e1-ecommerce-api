@@ -50,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
         Map<String, List<String>> attributes = new HashMap<>();
         attributes.put("gender", List.of(registerRequest.gender()));
         attributes.put("biography", List.of(registerRequest.biography()));
+        attributes.put("phoneNumber", List.of(registerRequest.phoneNumber()));
         user.setAttributes(attributes);
 
         // set password
