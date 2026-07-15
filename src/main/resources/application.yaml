@@ -10,7 +10,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/istad-oauth2
+          issuer-uri: http://localhost:9091/realms/ecommerce
   jpa:
     hibernate:
       ddl-auto: update # create, drop, alter, truncate
@@ -24,14 +24,14 @@ spring:
     username: e1usr
     password: qwerqwer
   application:
-    name: advanced-ecommerce-api-e1
+    name: ecommerce-e1
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size:  20MB
 keycloak:
-  server-url: http://localhost:8080
+  server-url: http://localhost:9091
   client-id: e1-spring-boot-client
-  client-secret: XiKIj2DeHP62SnDl6MgKDefcGnZnrUjy
-  realm: istad-oauth2
+  client-secret: 8139zFXbCgGKimHKYuZogm64OsOPZcZe
+  realm: ecommerce
 
