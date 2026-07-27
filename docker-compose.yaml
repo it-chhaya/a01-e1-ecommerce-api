@@ -5,6 +5,19 @@ volumes:
   ecommerce-db-e1-vol:
   keycloak-e1-vol:
 services:
+  ecommerce-api-e1:
+    image: ecommerce-api-e1:latest
+    build:
+      context: . #Dockerfile
+    container_name: ecommerce-api-e1
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ecommerce-db-e1:5432/db_ecommerce
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:9091/realms/ecommerce
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak-e1:8080/realms/ecommerce/protocol/openid-connect/certs
+    networks:
+      - e1-net
   ecommerce-db-e1:
     image: postgres:18.4
     container_name: ecommerce-db-e1
