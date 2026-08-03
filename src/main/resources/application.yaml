@@ -34,4 +34,10 @@ keycloak:
   client-id: e1-spring-boot-client
   client-secret: 8139zFXbCgGKimHKYuZogm64OsOPZcZe
   realm: ecommerce
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: nextjs # should be stored secretly
+      client-secret: p4HZVj9NCEg4m0mIjJIAwJ6h2G8goGKq # should be stored secretly
+      use-pkce-with-authorization-code-grant: true
 
