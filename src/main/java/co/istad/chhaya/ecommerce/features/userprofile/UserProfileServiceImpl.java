@@ -1,5 +1,6 @@
 package co.istad.chhaya.ecommerce.features.userprofile;
 
+import co.istad.chhaya.ecommerce.features.userprofile.dto.PatchUserProfileRequest;
 import co.istad.chhaya.ecommerce.features.userprofile.dto.UserProfileResponse;
 import co.istad.chhaya.ecommerce.security.AuthUtils;
 import co.istad.chhaya.ecommerce.security.KeycloakProperties;
@@ -21,6 +22,31 @@ public class UserProfileServiceImpl implements UserProfileService {
     private final UserProfileMapper userProfileMapper;
     private final Keycloak keycloak;
     private final KeycloakProperties keycloakProps;
+
+    @Override
+    public UserProfileResponse patchUserProfile(PatchUserProfileRequest patchUserProfileRequest) {
+        String userId = AuthUtils.extractUserId();
+
+        // Patch user profile in database
+        UserProfile userProfile = userProfileRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User profile has not been found"
+                ));
+        userProfileMapper.toEntity(userProfile, patchUserProfileRequest);
+        userProfileRepository.save(userProfile);
+
+        // Update user profile in keycloak
+        UserResource userResource = keycloak.realm(keycloakProps.getRealm())
+                .users()
+                .get(userId);
+        UserRepresentation userRepresentation = userResource.toRepresentation();
+        userProfileMapper.toUserRepresentation(userRepresentation, patchUserProfileRequest);
+        userResource.update(userRepresentation);
+
+        return userProfileMapper.buildUserProfileResponse(userRepresentation, userProfile);
+    }
+
 
     @Override
     public UserProfileResponse getUserProfile() {

@@ -1,11 +1,47 @@
 package co.istad.chhaya.ecommerce.features.userprofile;
 
+import co.istad.chhaya.ecommerce.features.userprofile.dto.PatchUserProfileRequest;
 import co.istad.chhaya.ecommerce.features.userprofile.dto.UserProfileResponse;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public abstract class UserProfileMapper {
+
+
+    public void toUserRepresentation(
+            UserRepresentation userRepresentation,
+            PatchUserProfileRequest patchUserProfileRequest
+    ) {
+        if (patchUserProfileRequest == null) {
+            return;
+        }
+        if (patchUserProfileRequest.firstName() != null) {
+            userRepresentation.setFirstName(patchUserProfileRequest.firstName());
+        }
+        if (patchUserProfileRequest.lastName() != null) {
+            userRepresentation.setLastName(patchUserProfileRequest.lastName());
+        }
+        if (patchUserProfileRequest.gender() != null) {
+            userRepresentation.getAttributes()
+                    .get("gender")
+                    .set(0, patchUserProfileRequest.gender());
+        }
+        if (patchUserProfileRequest.biography() != null) {
+            userRepresentation.getAttributes()
+                    .get("biography")
+                    .set(0, patchUserProfileRequest.biography());
+        }
+    }
+
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    abstract void toEntity(@MappingTarget UserProfile userProfile,
+                           PatchUserProfileRequest patchUserProfileRequest);
+
 
     public UserProfileResponse buildUserProfileResponse(
             UserRepresentation userRepresentation,
